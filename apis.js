@@ -1,5 +1,6 @@
 const express = require("express");
 const dbConnect = require("./MongoDb");
+const mongoDb = require("mongodb");   //to delete object with id
 
 const app = express();
 
@@ -27,6 +28,16 @@ app.put('/', async (req, res) => {
         {$set: req.body}
     )
     res.send(result);
+});
+
+
+//Delete
+app.delete('/:id', async (req, res) => {
+    const db = await dbConnect();
+    const result = await db.deleteOne(
+        {_id: mongoDb.ObjectId(req.params.id)},
+    )
+    console.log(result);
 });
 
 app.listen(5004);
